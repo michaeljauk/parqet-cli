@@ -1,6 +1,8 @@
 {
   "release-type": "node",
   "packages": {
-    ".": {}
+    ".": {
+      "release-as": "1.0.0"
+    }
   }
 }
