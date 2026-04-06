@@ -2,7 +2,6 @@
 import { Command } from "commander";
 import { registerAuthCommands } from "./commands/auth.ts";
 import { registerPortfolioCommands } from "./commands/portfolio.ts";
-import { registerSyncCommand } from "./commands/sync.ts";
 
 const program = new Command();
 
@@ -16,6 +15,5 @@ program
 
 registerAuthCommands(program);
 registerPortfolioCommands(program);
-registerSyncCommand(program);
 
 program.parseAsync();
