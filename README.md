@@ -94,7 +94,7 @@ parqet portfolio holdings <id> --output json | jq '[.[] | {name: .asset.name, va
 
 ### Claude Code skill
 
-The skill auto-installs to `~/.claude/skills/parqet/` on `npm install`. After installation it is available as `/parqet` in Claude Code.
+A [Claude Code](https://claude.ai/code) skill is bundled with this package. It auto-installs to `~/.claude/skills/parqet/` when you run `npm install -g parqet-cli` — no separate setup needed. Once installed, use `/parqet` in any Claude Code session to let Claude query your portfolio directly.
 
 ## Development
 
