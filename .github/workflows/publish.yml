@@ -31,5 +31,7 @@ jobs:
       - name: Generate types, typecheck, test, build
         run: bun run prepublishOnly
 
-      - name: Publish (Trusted Publishing via OIDC — no token needed)
+      - name: Publish
         run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
