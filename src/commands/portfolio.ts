@@ -137,7 +137,8 @@ function fmt(value: number, currency: string): string {
   return new Intl.NumberFormat("de-AT", { style: "currency", currency }).format(value);
 }
 
+// API returns decimal fractions (e.g. -0.1043 = -10.43%)
 function pct(value: number): string {
-  const multiplied = value > 1 ? value : value * 100;
-  return `${multiplied >= 0 ? "+" : ""}${multiplied.toFixed(2)}%`;
+  const p = value * 100;
+  return `${p >= 0 ? "+" : ""}${p.toFixed(2)}%`;
 }

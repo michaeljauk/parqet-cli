@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  typecheck:
+    name: Typecheck & Generate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Generate types from OpenAPI spec
+        run: bun run generate
+
+      - name: Check for spec drift
+        run: |
+          if ! git diff --quiet src/generated/; then
+            echo "::warning::Generated types are out of date. Run 'pnpm generate' and commit."
+            git diff src/generated/
+          fi
+
+      - name: Typecheck
+        run: bun run typecheck
