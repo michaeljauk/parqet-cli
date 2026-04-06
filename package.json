@@ -6,11 +6,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/michaeljauk/parqet-cli.git"
+    "url": "git+https://github.com/michaeljauk/parqet-cli.git"
   },
-  "keywords": ["parqet", "portfolio", "finance", "cli", "investments"],
+  "keywords": [
+    "parqet",
+    "portfolio",
+    "finance",
+    "cli",
+    "investments"
+  ],
   "bin": {
-    "parqet": "./dist/index.js"
+    "parqet": "dist/index.js"
   },
   "files": [
     "dist/",
@@ -20,7 +26,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build src/index.ts --outfile dist/index.js --target node --banner '#!/usr/bin/env node'",
+    "build": "bun build src/index.ts --outfile dist/index.js --target node && sed -i.bak '1s|.*|#!/usr/bin/env node|' dist/index.js && rm -f dist/index.js.bak && chmod +x dist/index.js",
     "dev": "bun run src/index.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
