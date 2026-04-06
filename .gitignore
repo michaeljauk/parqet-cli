@@ -2,3 +2,5 @@ node_modules/
 dist/
 .env
 *.local
+# generated — committed so users can install without running generate
+# src/generated/

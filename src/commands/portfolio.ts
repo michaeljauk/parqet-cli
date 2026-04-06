@@ -87,8 +87,8 @@ export function registerPortfolioCommands(program: Command): void {
           .filter((h) => !h.position.isSold)
           .sort((a, b) => b.position.currentValue - a.position.currentValue)
           .map((h) => ({
-            name: h.asset?.name ?? h.nickname ?? h.id,
-            isin: h.asset?.isin ?? "-",
+            name: assetName(h) ?? h.nickname ?? h.id,
+            isin: assetIsin(h) ?? "-",
             shares: h.position.shares,
             value: fmt(h.position.currentValue, currency),
             gain: fmt(h.performance.unrealizedGains.inInterval.gainGross, currency),
@@ -118,6 +118,19 @@ export function registerPortfolioCommands(program: Command): void {
         print(activities, format);
       } catch (err) { handleError(err); }
     });
+}
+
+import type { Holding } from "../lib/api.ts";
+
+function assetName(h: Holding): string | undefined {
+  if (!h.asset) return undefined;
+  if (h.asset.type === "cash") return "Cash";
+  return "name" in h.asset ? h.asset.name : undefined;
+}
+
+function assetIsin(h: Holding): string | undefined {
+  if (!h.asset) return undefined;
+  return "isin" in h.asset ? h.asset.isin : undefined;
 }
 
 function fmt(value: number, currency: string): string {

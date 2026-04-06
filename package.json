@@ -10,6 +10,7 @@
     "build": "bun build src/index.ts --outdir dist --target bun",
     "dev": "bun run src/index.ts",
     "typecheck": "tsc --noEmit",
+    "generate": "openapi-typescript https://developer.parqet.com/api-spec/current.json -o src/generated/parqet.d.ts",
     "lint": "bunx eslint src/"
   },
   "dependencies": {
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "openapi-typescript": "^7.13.0",
     "typescript": "^5.4.0"
   },
   "engines": {
