@@ -19,7 +19,8 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = await getAccessToken();
+  const token =
+    process.env["PARQET_TOKEN"] ?? (await getAccessToken());
   if (!token) throw new AuthError();
 
   const res = await fetch(`${API_BASE}${path}`, {
@@ -32,7 +33,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     },
   });
 
-  if (res.status === 401) throw new AuthError();
+  if (res.status === 401 || res.status === 403) throw new AuthError();
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
@@ -48,40 +49,107 @@ export interface Portfolio {
   id: string;
   name: string;
   currency: string;
-  value?: number;
+  createdAt: string;
+  distinctBrokers: string[];
+}
+
+export type Timeframe =
+  | "1d" | "1w" | "mtd" | "1m" | "3m" | "6m"
+  | "1y" | "ytd" | "3y" | "5y" | "10y" | "max";
+
+export interface PerformanceSummary {
+  valuation: {
+    atIntervalStart: number;
+    atIntervalEnd: number;
+  };
+  unrealizedGains: {
+    inInterval: {
+      gainGross: number;
+      gainNet: number;
+      returnGross: number;
+      returnNet: number;
+    };
+  };
+  realizedGains: Record<string, unknown>;
+  dividends: unknown;
+  fees: Record<string, unknown>;
+  taxes: Record<string, unknown>;
+  kpis?: {
+    inInterval?: {
+      xirr?: number | null;
+      ttwror?: number | null;
+    };
+  };
+}
+
+export interface HoldingAsset {
+  name?: string;
+  isin?: string;
+  symbol?: string;
+  type?: string;
+}
+
+export interface HoldingPosition {
+  shares: number;
+  purchasePrice: number;
+  purchaseValue: number;
+  currentPrice: number;
+  currentValue: number;
+  isSold: boolean;
 }
 
 export interface Holding {
   id: string;
-  name: string;
-  isin?: string;
-  quantity: number;
-  currentValue: number;
-  purchaseValue: number;
-  gainLoss: number;
-  gainLossPercent: number;
-  currency: string;
+  activityCount: number;
+  asset?: HoldingAsset;
+  nickname?: string;
+  position: HoldingPosition;
+  performance: PerformanceSummary;
 }
 
-export interface Performance {
-  portfolioValue: number;
-  unrealized: { gainGross: number; returnGross: number };
-  dividends?: { gainNet: number };
-  timeframe: string;
+export interface PerformanceResponse {
+  performance: PerformanceSummary;
+  holdings: Holding[];
+  interval: { type: string; value?: string; start?: string; end?: string };
+}
+
+export interface UserInfo {
+  userId: string;
+  installationId: string;
+  state: "active" | "deleted";
+  permissions: Array<{ action: "read" | "write"; resourceType: string; resourceId: string }>;
 }
 
 // --- API methods ---
 
 export const api = {
+  async user(): Promise<UserInfo> {
+    return request<UserInfo>("/user");
+  },
+
   async portfolios(): Promise<Portfolio[]> {
-    return request<Portfolio[]>("/v1/portfolios");
+    const res = await request<{ items: Portfolio[] }>("/portfolios");
+    return res.items;
   },
 
-  async portfolio(id: string, timeframe = "ytd"): Promise<{ portfolio: Portfolio; performance: Performance }> {
-    return request(`/v1/portfolios/${id}?timeframe=${timeframe}&useInclude=true`);
+  async performance(portfolioIds: string[], timeframe: Timeframe = "ytd"): Promise<PerformanceResponse> {
+    return request<PerformanceResponse>("/performance", {
+      method: "POST",
+      body: JSON.stringify({
+        portfolioIds,
+        interval: { type: "relative", value: timeframe },
+      }),
+    });
   },
 
-  async holdings(portfolioId: string): Promise<Holding[]> {
-    return request<Holding[]>(`/v1/portfolios/${portfolioId}/holdings`);
+  async activities(
+    portfolioId: string,
+    opts: { limit?: number; cursor?: string } = {}
+  ): Promise<{ activities: unknown[]; cursor?: string }> {
+    const params = new URLSearchParams();
+    if (opts.limit) params.set("limit", String(opts.limit));
+    if (opts.cursor) params.set("cursor", opts.cursor);
+    const qs = params.toString() ? `?${params}` : "";
+    return request(`/portfolios/${portfolioId}/activities${qs}`);
   },
 };
