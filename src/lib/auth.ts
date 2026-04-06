@@ -1,6 +1,7 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
-import { createHash, randomBytes } from "crypto";
-import { dirname } from "path";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash, randomBytes } from "node:crypto";
+import { createServer } from "node:http";
+import { dirname } from "node:path";
 import { CLIENT_ID, OAUTH_AUTHORIZE, OAUTH_TOKEN, REDIRECT_URI, TOKENS_FILE } from "./config.ts";
 import { error, info } from "./output.ts";
 
@@ -147,49 +148,49 @@ export async function login(): Promise<void> {
 
 function waitForCallback(expectedState: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    const server = Bun.serve({
-      port: 3000,
-      fetch(req) {
-        const url = new URL(req.url);
-        if (url.pathname !== "/callback") {
-          return new Response("Not found", { status: 404 });
-        }
+    const server = createServer((req, res) => {
+      const url = new URL(req.url ?? "/", "http://localhost:3000");
 
-        const code = url.searchParams.get("code");
-        const state = url.searchParams.get("state");
-        const err = url.searchParams.get("error");
+      if (url.pathname !== "/callback") {
+        res.writeHead(404);
+        res.end();
+        return;
+      }
 
-        if (err) {
-          server.stop();
-          reject(new Error(`OAuth error: ${err} — ${url.searchParams.get("error_description") ?? ""}`));
-          return new Response(htmlPage("Authorization failed", `Error: ${err}`), {
-            headers: { "Content-Type": "text/html" },
-          });
-        }
+      const code = url.searchParams.get("code");
+      const state = url.searchParams.get("state");
+      const err = url.searchParams.get("error");
 
-        if (state !== expectedState) {
-          server.stop();
-          reject(new Error("OAuth state mismatch — possible CSRF"));
-          return new Response(htmlPage("Authorization failed", "State mismatch."), {
-            headers: { "Content-Type": "text/html" },
-          });
-        }
+      const send = (title: string, body: string, status = 200) => {
+        const html = htmlPage(title, body);
+        res.writeHead(status, { "Content-Type": "text/html" });
+        res.end(html);
+        server.close();
+      };
 
-        if (!code) {
-          server.stop();
-          reject(new Error("No authorization code in callback"));
-          return new Response(htmlPage("Authorization failed", "No code received."), {
-            headers: { "Content-Type": "text/html" },
-          });
-        }
+      if (err) {
+        send("Authorization failed", `Error: ${err}`);
+        reject(new Error(`OAuth error: ${err} — ${url.searchParams.get("error_description") ?? ""}`));
+        return;
+      }
 
-        server.stop();
-        resolve(code);
-        return new Response(htmlPage("Authorization successful", "You can close this tab and return to the terminal."), {
-          headers: { "Content-Type": "text/html" },
-        });
-      },
+      if (state !== expectedState) {
+        send("Authorization failed", "State mismatch.");
+        reject(new Error("OAuth state mismatch — possible CSRF"));
+        return;
+      }
+
+      if (!code) {
+        send("Authorization failed", "No code received.");
+        reject(new Error("No authorization code in callback"));
+        return;
+      }
+
+      send("Authorization successful", "You can close this tab and return to the terminal.");
+      resolve(code);
     });
+
+    server.listen(3000);
   });
 }
 

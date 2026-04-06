@@ -121,6 +121,7 @@ export function registerPortfolioCommands(program: Command): void {
 }
 
 import type { Holding } from "../lib/api.ts";
+import { pct, fmt } from "../lib/format.ts";
 
 function assetName(h: Holding): string | undefined {
   if (!h.asset) return undefined;
@@ -133,11 +134,3 @@ function assetIsin(h: Holding): string | undefined {
   return "isin" in h.asset ? h.asset.isin : undefined;
 }
 
-function fmt(value: number, currency: string): string {
-  return new Intl.NumberFormat("de-AT", { style: "currency", currency }).format(value);
-}
-
-// API returns values already in percent points (e.g. -0.9569 = -0.96%)
-function pct(value: number): string {
-  return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
-}
