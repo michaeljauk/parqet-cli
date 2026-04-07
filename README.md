@@ -1,6 +1,33 @@
-# parqet-cli
+<p align="center">
+  <img src="assets/parqet-cli-logo-v4.png" width="96" alt="parqet-cli logo" />
+</p>
 
-CLI for the [Parqet](https://parqet.com) portfolio tracker. Fetch holdings, performance, and activities from the command line or from agents.
+<h1 align="center">parqet-cli</h1>
+
+<p align="center">
+  Query your <a href="https://parqet.com">Parqet</a> portfolio from the command line or from AI agents.
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/parqet-cli"><img src="https://img.shields.io/npm/v/parqet-cli.svg" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/parqet-cli"><img src="https://img.shields.io/npm/dm/parqet-cli.svg" alt="npm downloads" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/npm/l/parqet-cli.svg" alt="license" /></a>
+</p>
+
+<p align="center">
+  <a href="https://buymeacoffee.com/michaeljauk">
+    <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" />
+  </a>
+</p>
+
+---
+
+## Features
+
+- Fetch holdings, performance, and activities for any portfolio
+- Multiple output formats: `table`, `json`, `markdown`
+- CI-friendly: exit codes, env var overrides, non-interactive mode
+- Bundled [Claude Code](https://claude.ai/code) skill — lets AI agents query your portfolio directly
 
 ## Installation
 
@@ -8,41 +35,31 @@ CLI for the [Parqet](https://parqet.com) portfolio tracker. Fetch holdings, perf
 npm install -g parqet-cli
 ```
 
-After install, authenticate once:
+Authenticate once after install:
 
 ```sh
 parqet auth login   # opens browser for OAuth
 ```
 
-## Authentication
-
-```sh
-parqet auth login    # open browser for OAuth authorization
-parqet auth status   # check token status
-parqet auth logout   # remove stored credentials
-```
-
-Tokens are stored at `~/.config/parqet-cli/tokens.json` (mode 600).
-
-If a command exits with code `2`, authentication is missing or expired — run `parqet auth login`.
-
 ## Commands
 
 ```sh
-# List portfolios
+# Portfolios
 parqet portfolio list
-
-# Show portfolio performance (default: YTD)
 parqet portfolio show <id>
 parqet portfolio show <id> --timeframe 1y
-parqet portfolio show <id> --timeframe max
 
-# List holdings
+# Holdings
 parqet portfolio holdings <id>
 
-# List recent activities (transactions)
+# Activities (transactions)
 parqet portfolio activities <id>
 parqet portfolio activities <id> --limit 50
+
+# Auth
+parqet auth login    # authorize via browser
+parqet auth status   # check token status
+parqet auth logout   # remove stored credentials
 ```
 
 ### Timeframes
@@ -51,18 +68,18 @@ parqet portfolio activities <id> --limit 50
 
 ## Output formats
 
-Every command supports `--output table|json|markdown`:
+Every command accepts `--output table|json|markdown` (default: `table`):
 
 ```sh
 parqet portfolio list --output json
 parqet portfolio holdings <id> --output markdown >> holdings.md
 ```
 
-In CI environments (`CI=true`), JSON output is the default.
+In CI environments (`CI=true`), JSON is the default.
 
-## Agent / scripting use
+## Scripting & agent use
 
-Exit codes:
+### Exit codes
 
 | Code | Meaning |
 |------|---------|
@@ -70,31 +87,33 @@ Exit codes:
 | `1` | Error |
 | `2` | Not authenticated — run `parqet auth login` |
 
-Environment variables:
+### Environment variables
 
 | Variable | Description |
 |----------|-------------|
-| `PARQET_TOKEN` | Override stored access token (for CI) |
+| `PARQET_TOKEN` | Override stored access token (useful in CI) |
 | `PARQET_QUIET=1` | Suppress info messages |
 | `NO_COLOR=1` | Disable ANSI colors |
 | `CI=true` | Non-interactive mode, defaults to JSON output |
 
-### jq patterns
+Tokens are stored at `~/.config/parqet-cli/tokens.json` (mode 600). If a command exits with code `2`, the token is missing or expired.
+
+### jq examples
 
 ```sh
-# Portfolio value
+# Current portfolio value
 parqet portfolio show <id> --output json | jq '.performance.valuation.atIntervalEnd'
 
-# YTD return (percent points — e.g. -0.96 means -0.96%)
+# YTD return in percent
 parqet portfolio show <id> --output json | jq '.performance.unrealizedGains.inInterval.returnGross'
 
-# Holdings sorted by value
+# Holdings sorted by current value
 parqet portfolio holdings <id> --output json | jq '[.[] | {name: .asset.name, value: .position.currentValue}] | sort_by(-.value)'
 ```
 
-### Claude Code skill
+## Claude Code skill
 
-A [Claude Code](https://claude.ai/code) skill is bundled with this package. It auto-installs to `~/.claude/skills/parqet/` when you run `npm install -g parqet-cli` — no separate setup needed. Once installed, use `/parqet` in any Claude Code session to let Claude query your portfolio directly.
+A Claude Code skill is bundled and auto-installs to `~/.claude/skills/parqet/` on `npm install -g`. No extra setup needed. Use `/parqet` in any Claude Code session to let Claude query your portfolio directly.
 
 ## Development
 
