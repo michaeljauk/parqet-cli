@@ -3,5 +3,5 @@
   <rect width="256" height="256" rx="52" fill="#0d1f2d"/>
 
   <!-- Big prompt symbol, vertically centered -->
-  <text x="28" y="168" font-family="'SF Mono', 'Fira Code', 'Courier New', monospace" font-size="110" font-weight="bold" fill="#00e8a8">&gt;_</text>
+  <text x="128" y="128" font-family="'SF Mono', 'Fira Code', 'Courier New', monospace" font-size="110" font-weight="bold" fill="#00e8a8" text-anchor="middle" dominant-baseline="central">&gt;_</text>
 </svg>
