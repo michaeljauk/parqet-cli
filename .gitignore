@@ -4,3 +4,4 @@ dist/
 *.local
 # generated — committed so users can install without running generate
 # src/generated/
+.DS_Store
