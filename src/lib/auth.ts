@@ -2,8 +2,10 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash, randomBytes } from "node:crypto";
 import { createServer } from "node:http";
 import { dirname } from "node:path";
+import { createInterface } from "node:readline/promises";
+import { stdin, stdout } from "node:process";
 import { CLIENT_ID, OAUTH_AUTHORIZE, OAUTH_TOKEN, REDIRECT_URI, TOKENS_FILE } from "./config.ts";
-import { error, info } from "./output.ts";
+import { c, info } from "./output.ts";
 
 export interface Tokens {
   access_token: string;
@@ -95,7 +97,11 @@ export async function getAccessToken(): Promise<string | null> {
 
 // --- OAuth PKCE login flow ---
 
-export async function login(): Promise<void> {
+export interface LoginOptions {
+  noBrowser?: boolean;
+}
+
+export async function login(options: LoginOptions = {}): Promise<void> {
   const verifier = generateVerifier();
   const challenge = generateChallenge(verifier);
   const state = base64url(randomBytes(16));
@@ -109,14 +115,9 @@ export async function login(): Promise<void> {
   authUrl.searchParams.set("code_challenge_method", "S256");
   authUrl.searchParams.set("state", state);
 
-  info("Opening browser for Parqet authorization...");
-  info(`If the browser doesn't open, visit:\n  ${authUrl.toString()}`);
-
-  const { default: open } = await import("open");
-  await open(authUrl.toString());
-
-  // Start local callback server
-  const code = await waitForCallback(state);
+  const code = options.noBrowser
+    ? await manualFlow(authUrl.toString(), state)
+    : await browserFlow(authUrl.toString(), state);
 
   info("Exchanging authorization code for tokens...");
   const res = await fetch(OAUTH_TOKEN, {
@@ -142,6 +143,67 @@ export async function login(): Promise<void> {
     refresh_token: data.refresh_token,
     expires_at: data.expires_in ? Date.now() + data.expires_in * 1000 : undefined,
   });
+}
+
+async function browserFlow(url: string, state: string): Promise<string> {
+  info("Opening browser for Parqet authorization...");
+  info(`If the browser doesn't open, visit:\n  ${url}`);
+
+  try {
+    const { default: open } = await import("open");
+    const child = await open(url);
+    child.on("error", () => {
+      // Browser launcher not available (e.g. headless Linux without xdg-open).
+      // The callback server is still running; user can open the URL manually.
+    });
+  } catch {
+    info("Could not launch a browser. Open the URL above manually.");
+    info("On a headless machine, re-run with --no-browser for a paste-based flow.");
+  }
+
+  return waitForCallback(state);
+}
+
+async function manualFlow(url: string, expectedState: string): Promise<string> {
+  console.error(c.bold("\nHeadless authorization"));
+  console.error("Open this URL in a browser on any device:\n");
+  console.error(`  ${url}\n`);
+  console.error(
+    "After approving, your browser will be redirected to a localhost URL that may fail to load."
+  );
+  console.error("Copy the full URL from the address bar and paste it below.\n");
+
+  const rl = createInterface({ input: stdin, output: stdout });
+  try {
+    const answer = (await rl.question("Paste redirect URL (or just the code): ")).trim();
+    if (!answer) throw new Error("No input provided");
+
+    let code: string | null = null;
+    let state: string | null = null;
+
+    if (answer.includes("?") || answer.startsWith("http")) {
+      const parsed = new URL(answer, "http://localhost");
+      code = parsed.searchParams.get("code");
+      state = parsed.searchParams.get("state");
+      const err = parsed.searchParams.get("error");
+      if (err) {
+        throw new Error(
+          `OAuth error: ${err} — ${parsed.searchParams.get("error_description") ?? ""}`
+        );
+      }
+    } else {
+      // Bare code — skip state check (user takes responsibility).
+      code = answer;
+    }
+
+    if (!code) throw new Error("No authorization code found in input");
+    if (state !== null && state !== expectedState) {
+      throw new Error("OAuth state mismatch — possible CSRF or stale URL");
+    }
+    return code;
+  } finally {
+    rl.close();
+  }
 }
 
 // --- Local HTTP server to catch OAuth callback ---

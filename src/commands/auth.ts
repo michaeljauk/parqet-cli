@@ -9,9 +9,10 @@ export function registerAuthCommands(program: Command): void {
   auth
     .command("login")
     .description("Authenticate with your Parqet account via OAuth")
-    .action(async () => {
+    .option("--no-browser", "Headless flow: print URL and paste redirect URL back")
+    .action(async (opts: { browser?: boolean }) => {
       try {
-        await login();
+        await login({ noBrowser: opts.browser === false });
         console.log(c.green("Authenticated successfully."));
       } catch (err) {
         error(err instanceof Error ? err.message : String(err));
