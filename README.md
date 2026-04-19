@@ -57,10 +57,23 @@ parqet portfolio activities <id>
 parqet portfolio activities <id> --limit 50
 
 # Auth
-parqet auth login    # authorize via browser
-parqet auth status   # check token status
-parqet auth logout   # remove stored credentials
+parqet auth login                # authorize via browser
+parqet auth login --no-browser   # headless flow: print URL, paste redirect back
+parqet auth status               # check token status
+parqet auth logout               # remove stored credentials
 ```
+
+### Headless / remote servers
+
+On machines without a browser (headless Linux, SSH-only boxes), use:
+
+```sh
+parqet auth login --no-browser
+```
+
+It prints an authorization URL, you open it on any device, and paste the
+redirect URL (copied from your browser's address bar — the localhost page
+does not need to load) back into the prompt.
 
 ### Timeframes
 
