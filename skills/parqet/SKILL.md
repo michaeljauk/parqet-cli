@@ -87,4 +87,5 @@ All commands support `--output table|json|markdown`. Agents should always use `-
 
 - `returnGross` and `returnNet` are in **percent points** (e.g. `-0.96` = `-0.96%`, not `-96%`)
 - `gainGross` / `gainNet` are in the portfolio currency
-- Holdings come from the performance endpoint, not a separate endpoint
+- Holdings with values come from the performance endpoint. `GET /portfolios/{id}/holdings`
+  also exists, but returns metadata only — no shares, no value, no performance
