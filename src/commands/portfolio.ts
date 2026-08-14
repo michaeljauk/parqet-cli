@@ -87,7 +87,7 @@ export function registerPortfolioCommands(program: Command): void {
           .filter((h) => !h.position.isSold)
           .sort((a, b) => b.position.currentValue - a.position.currentValue)
           .map((h) => ({
-            name: assetName(h) ?? h.nickname ?? h.id,
+            name: assetName(h) ?? h.id,
             isin: assetIsin(h) ?? "-",
             shares: h.position.shares,
             value: fmt(h.position.currentValue, currency),
@@ -123,10 +123,22 @@ export function registerPortfolioCommands(program: Command): void {
 import type { Holding } from "../lib/api.ts";
 import { pct, fmt } from "../lib/format.ts";
 
+// Only security, crypto and commodity assets carry a name. The other five types are
+// identified by their nickname, which the API allows to be null. Without a label per type,
+// such a holding falls through to its raw id.
+const ASSET_LABELS: Record<string, string> = {
+  cash: "Cash",
+  commodity: "Commodity",
+  custom: "Custom Asset",
+  insurance: "Insurance",
+  p2p: "P2P",
+  real_estate: "Real Estate",
+};
+
 function assetName(h: Holding): string | undefined {
   if (!h.asset) return undefined;
-  if (h.asset.type === "cash") return "Cash";
-  return "name" in h.asset ? h.asset.name : undefined;
+  if ("name" in h.asset && h.asset.name) return h.asset.name;
+  return h.nickname ?? ASSET_LABELS[h.asset.type];
 }
 
 function assetIsin(h: Holding): string | undefined {
