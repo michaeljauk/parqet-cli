@@ -119,6 +119,48 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/portfolios/{portfolioId}/holdings/insurance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Create a new insurance holding for the user.
+         *
+         *     Once you have created an insurance holding, you can create activities by using the create activities endpoint.
+         */
+        post: operations["portfolios_holdings_create_insurance"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/portfolios/{portfolioId}/holdings/p2p": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Create a new P2P holding for the user.
+         *
+         *     Once you have created a P2P holding, you can create activities by using the create activities endpoint.
+         */
+        post: operations["portfolios_holdings_create_p2p"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/portfolios/{portfolioId}/holdings/cash": {
         parameters: {
             query?: never;
@@ -161,6 +203,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/portfolios/{portfolioId}/holdings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Retrieve all holdings of the specified portfolio. */
+        get: operations["portfolios_holdings_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/performance": {
         parameters: {
             query?: never;
@@ -197,19 +256,15 @@ export interface components {
         };
         CreateActivityBodyDto: {
             activities: ({
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -221,7 +276,17 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 /**
                  * @example buy
                  * @enum {string}
@@ -232,19 +297,15 @@ export interface components {
                 /** @example US0378331005 */
                 isin: string;
             } | {
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -256,7 +317,17 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 /**
                  * @example buy
                  * @enum {string}
@@ -267,19 +338,15 @@ export interface components {
                 /** @example BTC */
                 symbol: string;
             } | {
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -291,7 +358,15 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 2342 */
+                amount: number;
                 /**
                  * @example buy
                  * @enum {string}
@@ -302,19 +377,15 @@ export interface components {
                 /** @example hld_698264d2cb0f0369b3892235 */
                 holding_id: string;
             } | {
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -326,7 +397,17 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 /**
                  * @example buy
                  * @enum {string}
@@ -337,19 +418,15 @@ export interface components {
                 /** @example hld_698264d2cb0f0369b3892235 */
                 holding_id: string;
             } | {
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -361,7 +438,17 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 /**
                  * @example buy
                  * @enum {string}
@@ -372,19 +459,15 @@ export interface components {
                 /** @example hld_698264d2cb0f0369b3892235 */
                 holding_id: string;
             } | {
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -396,7 +479,95 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 2342 */
+                amount: number;
+                /**
+                 * @example buy
+                 * @enum {string}
+                 */
+                type: "buy" | "sell" | "dividend" | "transfer_in" | "transfer_out" | "fees_taxes" | "deposit" | "withdrawal";
+                /** @constant */
+                assetIdentifierType: "insurance";
+                /** @example hld_698264d2cb0f0369b3892235 */
+                holding_id: string;
+            } | {
+                /** @example 0 */
+                tax?: number;
+                /** @example 0 */
+                fee?: number;
+                /**
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
+                 * @enum {string}
+                 */
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                /**
+                 * Format: date-time
+                 * @example 2025-11-17T09:33:39.892Z
+                 */
+                datetime: string;
+                /** @example Optional description that is visible to the user */
+                description?: string;
+                /**
+                 * @example bitpanda
+                 * @enum {string}
+                 */
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 2342 */
+                amount: number;
+                /**
+                 * @example buy
+                 * @enum {string}
+                 */
+                type: "buy" | "sell" | "dividend" | "transfer_in" | "transfer_out" | "fees_taxes" | "deposit" | "withdrawal";
+                /** @constant */
+                assetIdentifierType: "p2p";
+                /** @example hld_698264d2cb0f0369b3892235 */
+                holding_id: string;
+            } | {
+                /** @example 0 */
+                tax?: number;
+                /** @example 0 */
+                fee?: number;
+                /**
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
+                 * @enum {string}
+                 */
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                /**
+                 * Format: date-time
+                 * @example 2025-11-17T09:33:39.892Z
+                 */
+                datetime: string;
+                /** @example Optional description that is visible to the user */
+                description?: string;
+                /**
+                 * @example bitpanda
+                 * @enum {string}
+                 */
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 /**
                  * @example buy
                  * @enum {string}
@@ -424,19 +595,15 @@ export interface components {
             activities: ({
                 /** @constant */
                 type: "buy";
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -448,11 +615,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -475,6 +652,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -486,6 +673,22 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "sell";
@@ -493,19 +696,15 @@ export interface components {
                 avgHoldingPeriod: number;
                 buyAmountNet: number;
                 realizedGainsNet: number;
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -517,11 +716,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -544,6 +753,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -555,22 +774,34 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "dividend";
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -582,11 +813,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -609,6 +850,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -620,22 +871,34 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "interest";
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -647,11 +910,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -674,6 +947,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -685,22 +968,34 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "transfer_in";
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -712,11 +1007,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -739,6 +1044,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -750,6 +1065,22 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "transfer_out";
@@ -757,19 +1088,15 @@ export interface components {
                 avgHoldingPeriod: number;
                 buyAmountNet: number;
                 realizedGainsNet: number;
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -781,11 +1108,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -808,6 +1145,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -819,22 +1166,34 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "fees_taxes";
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -846,11 +1205,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -873,6 +1242,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -884,22 +1263,34 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "deposit";
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -911,11 +1302,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -938,6 +1339,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -949,22 +1360,34 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             } | {
                 /** @constant */
                 type: "withdrawal";
-                /** @example 10 */
-                shares: number;
-                /** @example 234.2 */
-                price: number;
                 /** @example 0 */
                 tax?: number;
                 /** @example 0 */
                 fee?: number;
                 /**
-                 * @description Currency of the provided `price`, `tax` and `fee` properties
+                 * @description Currency of the provided monetary properties (`amount`, `price`, `tax` and `fee`)
                  * @enum {string}
                  */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /**
                  * Format: date-time
                  * @example 2025-11-17T09:33:39.892Z
@@ -976,11 +1399,21 @@ export interface components {
                  * @example bitpanda
                  * @enum {string}
                  */
-                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                broker?: "1822direkt" | "bison" | "bitpanda" | "bsdex" | "bondora" | "baader_bank" | "cap_trader" | "coinbase" | "coinbase_pro" | "comdirect" | "consors_bank" | "cortal_consors" | "commerzbank" | "crypto_com" | "dadat" | "deutsche_bank" | "degiro" | "dkb" | "ebase" | "erste_bank" | "extra_etf" | "ffb" | "finanzen_zero" | "finvesto" | "flatex" | "fondsdepot_bank" | "generic_csv" | "gratisbroker" | "hypo_vereinsbank" | "ing" | "interactive_brokers" | "just_trade" | "kraken" | "lgt_bank" | "onvista" | "oskar" | "peaks" | "portfolio_performance" | "postbank" | "quirion" | "saxo_bank" | "s_broker" | "scalable_capital" | "smartbroker" | "spk_vb" | "smavesto" | "smartbroker_plus" | "sunrise" | "sutorbank" | "swissquote" | "targobank" | "tomorrow" | "trade_republic" | "traders_place" | "trading212" | "union_investment" | "vanguard" | "v_bank" | "volksbank" | "yuh";
+                /**
+                 * @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker).
+                 *
+                 *     It also serves as an explicit deduplication key for activities. Two otherwise identical activities with different external ids will be stored as two separate activities, while two activities with the same externalId will be treated as the same activity and deduplicated accordingly.
+                 */
+                externalId?: string;
+                /** @example 10 */
+                shares: number;
+                /** @example 234.2 */
+                price: number;
                 id: string;
                 holdingId: string;
                 /** @enum {string} */
-                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate";
+                holdingAssetType: "cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate";
                 asset: {
                     /** @constant */
                     assetIdentifierType: "isin";
@@ -1003,6 +1436,16 @@ export interface components {
                     holding_id: string;
                 } | {
                     /** @constant */
+                    assetIdentifierType: "insurance";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
+                    assetIdentifierType: "p2p";
+                    /** @example hld_698264d2cb0f0369b3892235 */
+                    holding_id: string;
+                } | {
+                    /** @constant */
                     assetIdentifierType: "commodity";
                     /** @example Gold */
                     name: string;
@@ -1014,6 +1457,22 @@ export interface components {
                 };
                 amount: number;
                 amountNet: number;
+                /** @description FX information if the activity was executed in a different currency than the portfolio currency - if null the activity was executed in the portfolio currency */
+                fx: {
+                    /** @example 1.234 */
+                    rate: number;
+                    /**
+                     * @example USD
+                     * @enum {string}
+                     */
+                    originalCurrency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                    /** @example 234.2 */
+                    originalPrice: number;
+                    originalTax: number;
+                    originalFee: number;
+                    originalAmount: number;
+                    originalAmountNet: number;
+                } | null;
             })[];
             cursor: string | null;
         };
@@ -1025,11 +1484,30 @@ export interface components {
                  */
                 id: string;
                 /** @enum {string} */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 name: string;
                 /** Format: date-time */
                 createdAt: string;
                 distinctBrokers: string[];
+                /** @description Sub-accounts represent separate securities accounts that a broker manages within a single brokerage connection — for example, multiple depots at the same bank that are imported into one Parqet portfolio. */
+                subAccounts: ({
+                    /**
+                     * @description Identifier of a portfolio sub-account
+                     * @example 67910d3879bf5f007acd4164::56910a3879bf5f007acd4539
+                     */
+                    id: string;
+                    name: string;
+                    /** @constant */
+                    isDefault: false;
+                } | {
+                    /**
+                     * @description Identifier of a portfolio sub-account
+                     * @example 67910d3879bf5f007acd4164::56910a3879bf5f007acd4539
+                     */
+                    id: string;
+                    /** @constant */
+                    isDefault: true;
+                })[];
             }[];
         };
         PortfolioCreationBodyDto: {
@@ -1045,7 +1523,21 @@ export interface components {
         CustomHoldingCreationBodyDto: {
             name: string;
             /** @enum {string} */
-            assetProduct: "private_equity" | "p2p" | "insurance" | "material_asset" | "other";
+            assetProduct: "private_equity" | "material_asset" | "other";
+            /**
+             * Format: base64
+             * @description Base64 encoded PNG image data (256x256, max 512KiB)
+             */
+            imageData?: string;
+            /** @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker). */
+            externalId?: string;
+            quotes?: {
+                /** @enum {string} */
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+                /** Format: date-time */
+                datetime: string;
+                price: number;
+            }[];
         };
         HoldingCreationResponseDto_Output: {
             /**
@@ -1056,13 +1548,27 @@ export interface components {
         };
         CustomHoldingCreateUserManagedQuotesBodyDto: {
             /**
-             * @description Id of the parqet holding
+             * @deprecated
+             * @description Deprecated - use `identifier` field instead
              * @example 68dbc0b6cf3c111e1be1d411
              */
-            holdingId: string;
+            holdingId?: string;
+            identifier?: {
+                /** @constant */
+                type: "holdingId";
+                /**
+                 * @description Id of the parqet holding
+                 * @example 68dbc0b6cf3c111e1be1d411
+                 */
+                value: string;
+            } | {
+                /** @constant */
+                type: "externalId";
+                value: string;
+            };
             quotes: {
                 /** @enum {string} */
-                currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 /** Format: date-time */
                 datetime: string;
                 price: number;
@@ -1076,6 +1582,28 @@ export interface components {
              * @description Base64 encoded PNG image data (256x256, max 512KiB)
              */
             imageData?: string;
+            /** @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker). */
+            externalId?: string;
+        };
+        InsuranceHoldingCreationBodyDto: {
+            name: string;
+            /**
+             * Format: base64
+             * @description Base64 encoded PNG image data (256x256, max 512KiB)
+             */
+            imageData?: string;
+            /** @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker). */
+            externalId?: string;
+        };
+        P2PHoldingCreationBodyDto: {
+            name: string;
+            /**
+             * Format: base64
+             * @description Base64 encoded PNG image data (256x256, max 512KiB)
+             */
+            imageData?: string;
+            /** @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker). */
+            externalId?: string;
         };
         CashHoldingCreationBodyDto: {
             name: string;
@@ -1083,7 +1611,7 @@ export interface components {
              * @default EUR
              * @enum {string}
              */
-            currency: "ARS" | "AUD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "RMB" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "USDC" | "VND" | "ZAR" | "ZMW";
+            currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
             /**
              * @description Defines the asset classes for which this cash holding acts as a reference account.
              *
@@ -1093,7 +1621,9 @@ export interface components {
              *     If no value is provided, the cash holding is independent and not used as a reference account.
              * @default []
              */
-            referenceAccountFor: ("cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate")[];
+            referenceAccountFor: ("security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate")[];
+            /** @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker). */
+            externalId?: string;
         };
         CommodityHoldingCreationBodyDto: {
             name: string;
@@ -1108,6 +1638,61 @@ export interface components {
              * @enum {string}
              */
             identifier: "gold" | "silver" | "platinum" | "palladium";
+            /** @description This identifier can be used to create a logical connection between the data stored in parqet and the original data source of the user (e.g. the broker). */
+            externalId?: string;
+        };
+        HoldingsRetrieveResponseDto_Output: {
+            items: {
+                /** @description The ID of the holding. */
+                id: string;
+                activityCount: number;
+                logo: string | null;
+                nickname: string | null;
+                asset: {
+                    /** @constant */
+                    type: "security";
+                    isin: string;
+                    name: string;
+                } | {
+                    /** @constant */
+                    type: "crypto";
+                    symbol: string;
+                    name: string;
+                } | {
+                    /** @constant */
+                    type: "commodity";
+                    /** @enum {string} */
+                    identifier: "gold" | "silver" | "platinum" | "palladium";
+                    name: string;
+                    /** @enum {string} */
+                    unit: "oz.tr." | "g";
+                    amount: number;
+                    purity: number;
+                } | {
+                    /** @constant */
+                    type: "cash";
+                } | {
+                    /** @constant */
+                    type: "custom";
+                } | {
+                    /** @constant */
+                    type: "insurance";
+                } | {
+                    /** @constant */
+                    type: "p2p";
+                } | {
+                    /** @constant */
+                    type: "real_estate";
+                };
+                externalId?: string;
+                /**
+                 * @description Identifier of a portfolio sub-account
+                 * @example 67910d3879bf5f007acd4164::56910a3879bf5f007acd4539
+                 */
+                subAccount: string;
+                /** @enum {string} */
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+            }[];
         };
         PortfolioPerformanceBodyDto: {
             portfolioIds: string[];
@@ -1129,6 +1714,15 @@ export interface components {
                 start: string;
                 /** Format: date-time */
                 end?: string;
+            };
+            /**
+             * @default EUR
+             * @enum {string}
+             */
+            currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
+            /** @default {} */
+            filter: {
+                subAccountIds?: string[];
             };
         };
         PortfolioPerformanceDto_Output: {
@@ -1231,8 +1825,51 @@ export interface components {
                 id: string;
                 activityCount: number;
                 logo: string | null;
-                /** Format: date */
-                earliestActivityDate: string;
+                nickname: string | null;
+                asset: {
+                    /** @constant */
+                    type: "security";
+                    isin: string;
+                    name: string;
+                } | {
+                    /** @constant */
+                    type: "crypto";
+                    symbol: string;
+                    name: string;
+                } | {
+                    /** @constant */
+                    type: "commodity";
+                    /** @enum {string} */
+                    identifier: "gold" | "silver" | "platinum" | "palladium";
+                    name: string;
+                    /** @enum {string} */
+                    unit: "oz.tr." | "g";
+                    amount: number;
+                    purity: number;
+                } | {
+                    /** @constant */
+                    type: "cash";
+                } | {
+                    /** @constant */
+                    type: "custom";
+                } | {
+                    /** @constant */
+                    type: "insurance";
+                } | {
+                    /** @constant */
+                    type: "p2p";
+                } | {
+                    /** @constant */
+                    type: "real_estate";
+                };
+                externalId?: string;
+                /**
+                 * @description Identifier of a portfolio sub-account
+                 * @example 67910d3879bf5f007acd4164::56910a3879bf5f007acd4539
+                 */
+                subAccount: string;
+                /** @enum {string} */
+                currency: "AED" | "ARS" | "AUD" | "BHD" | "BRL" | "BWP" | "CAD" | "CHF" | "CLP" | "CNY" | "CZK" | "DKK" | "EUR" | "GBP" | "GBX" | "GEL" | "HKD" | "HUF" | "IDR" | "ILS" | "INR" | "ISK" | "JPY" | "KRW" | "KZT" | "MAD" | "MXN" | "MYR" | "NOK" | "NZD" | "PEN" | "PHP" | "PLN" | "QAR" | "RON" | "RSD" | "RUB" | "SAR" | "SEK" | "SGD" | "THB" | "TRY" | "TWD" | "USD" | "VND" | "ZAR" | "ZMW";
                 startQuote: {
                     currency: string;
                     exchange: string;
@@ -1255,35 +1892,8 @@ export interface components {
                         originalCurrency: string;
                     } | null;
                 };
-                nickname: string | null;
-                asset: {
-                    /** @constant */
-                    type: "security";
-                    isin: string;
-                    name: string;
-                } | {
-                    /** @constant */
-                    type: "crypto";
-                    symbol: string;
-                    name: string;
-                } | {
-                    /** @constant */
-                    type: "commodity";
-                    name: string;
-                    /** @enum {string} */
-                    unit: "oz.tr." | "g";
-                    amount: number;
-                    purity: number;
-                } | {
-                    /** @constant */
-                    type: "cash";
-                } | {
-                    /** @constant */
-                    type: "custom";
-                } | {
-                    /** @constant */
-                    type: "real_estate";
-                };
+                /** Format: date */
+                earliestActivityDate: string;
                 performance: {
                     kpis: {
                         inInterval: {
@@ -1488,7 +2098,7 @@ export interface operations {
                 /** @description If provided, only activities of the specified type(s) will be returned. If not provided, all activity types will be returned. */
                 activityType?: ("buy" | "sell" | "dividend" | "interest" | "transfer_in" | "transfer_out" | "fees_taxes" | "deposit" | "withdrawal")[] | ("buy" | "sell" | "dividend" | "interest" | "transfer_in" | "transfer_out" | "fees_taxes" | "deposit" | "withdrawal");
                 /** @description If provided, only activities for holdings of the specified asset type(s) will be returned. If not provided, all activities are returned */
-                assetType?: ("cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate")[] | ("cash" | "security" | "crypto" | "commodity" | "custom" | "real_estate");
+                assetType?: ("cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate")[] | ("cash" | "security" | "crypto" | "commodity" | "custom" | "insurance" | "p2p" | "real_estate");
                 /** @description If provided, only activities for holdings of the specified id(s) will be returned. If not provided, all activities are returned */
                 holdingId?: string[] | string;
             };
@@ -1657,6 +2267,58 @@ export interface operations {
             };
         };
     };
+    portfolios_holdings_create_insurance: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the parqet portfolio */
+                portfolioId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InsuranceHoldingCreationBodyDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HoldingCreationResponseDto_Output"];
+                };
+            };
+        };
+    };
+    portfolios_holdings_create_p2p: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the parqet portfolio */
+                portfolioId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["P2PHoldingCreationBodyDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HoldingCreationResponseDto_Output"];
+                };
+            };
+        };
+    };
     portfolios_holdings_create_cash: {
         parameters: {
             query?: never;
@@ -1705,6 +2367,28 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HoldingCreationResponseDto_Output"];
+                };
+            };
+        };
+    };
+    portfolios_holdings_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the parqet portfolio */
+                portfolioId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HoldingsRetrieveResponseDto_Output"];
                 };
             };
         };
