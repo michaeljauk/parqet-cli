@@ -47,6 +47,12 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 export type UserInfo = components["schemas"]["ConnectInfoDto_Output"];
 export type Portfolio = components["schemas"]["PortfolioListResponseDto_Output"]["items"][0];
 export type PerformanceBody = components["schemas"]["PortfolioPerformanceBodyDto"];
+
+// `currency` and `filter` carry server-side defaults (EUR, no filter). openapi-typescript
+// renders every property that has a `default` as required, so a request that omits them
+// does not satisfy PerformanceBody. Only `portfolioIds` is required by the spec.
+export type PerformanceRequest = Omit<PerformanceBody, "currency" | "filter"> &
+  Partial<Pick<PerformanceBody, "currency" | "filter">>;
 export type PerformanceResponse = components["schemas"]["PortfolioPerformanceDto_Output"];
 export type Holding = PerformanceResponse["holdings"][0];
 export type PerformanceSummary = PerformanceResponse["performance"];
@@ -76,7 +82,7 @@ export const api = {
       body: JSON.stringify({
         portfolioIds,
         interval: { type: "relative", value: timeframe },
-      } satisfies PerformanceBody),
+      } satisfies PerformanceRequest),
     });
   },
 
