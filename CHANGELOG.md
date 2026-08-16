@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3](https://github.com/michaeljauk/parqet-cli/compare/v1.0.2...v1.0.3) (2026-08-16)
+
+
+### Bug Fixes
+
+* **cli:** report the package version instead of a hardcoded string ([649de25](https://github.com/michaeljauk/parqet-cli/commit/649de25aef02136a828640eaa1e753ad08416cdd))
+* **holdings:** label asset types that carry no name ([09ab7a7](https://github.com/michaeljauk/parqet-cli/commit/09ab7a7f75cead1c33edfc8015d8d91bd760c880))
+
 ## [1.0.2](https://github.com/michaeljauk/parqet-cli/compare/v1.0.1...v1.0.2) (2026-04-19)
 
 
