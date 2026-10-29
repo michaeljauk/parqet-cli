@@ -5,13 +5,8 @@
 <h1 align="center">parqet-cli</h1>
 
 <p align="center">
-  Query your <a href="https://parqet.com">Parqet</a> portfolio from the command line or from AI agents.
-</p>
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/parqet-cli"><img src="https://img.shields.io/npm/v/parqet-cli.svg" alt="npm version" /></a>
-  <a href="https://www.npmjs.com/package/parqet-cli"><img src="https://img.shields.io/npm/dm/parqet-cli.svg" alt="npm downloads" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/npm/l/parqet-cli.svg" alt="license" /></a>
+  Query your <a href="https://parqet.com">Parqet</a> portfolio from the command line or from AI agents.<br />
+  Unofficial, community-maintained.
 </p>
 
 <p align="center">
@@ -20,14 +15,31 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/michaeljauk/parqet-cli/actions/workflows/ci.yml"><img src="https://github.com/michaeljauk/parqet-cli/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/michaeljauk/parqet-cli/actions/workflows/codeql.yml"><img src="https://github.com/michaeljauk/parqet-cli/actions/workflows/codeql.yml/badge.svg" alt="CodeQL" /></a>
+  <a href="https://www.npmjs.com/package/parqet-cli"><img src="https://img.shields.io/npm/v/parqet-cli.svg?label=parqet-cli" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/parqet-cli"><img src="https://img.shields.io/npm/dm/parqet-cli.svg?label=downloads" alt="npm downloads" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
+</p>
+
 ---
 
-## Features
+## Why
 
-- Fetch holdings, performance, and activities for any portfolio
-- Multiple output formats: `table`, `json`, `markdown`
-- CI-friendly: exit codes, env var overrides, non-interactive mode
-- Bundled [Claude Code](https://claude.ai/code) skill — lets AI agents query your portfolio directly
+Parqet has a web app and an OAuth API, but no command-line client. parqet-cli adds one:
+
+- Fetch holdings, performance, and activities for any portfolio.
+- Print the result as `table`, `json`, or `markdown`.
+- Use it in scripts and CI: it has exit codes, environment variables, and a non-interactive mode.
+- Let AI agents query your portfolio through the bundled [Claude Code](https://claude.ai/code) skill.
+
+Typical use cases:
+
+- See your portfolio value and return in the terminal
+- Write your holdings into a Markdown note
+- Record performance on a schedule, for example from a cron job
+- Ask an AI agent about your holdings and transactions
 
 ## Installation
 
@@ -71,9 +83,9 @@ On machines without a browser (headless Linux, SSH-only boxes), use:
 parqet auth login --no-browser
 ```
 
-It prints an authorization URL, you open it on any device, and paste the
-redirect URL (copied from your browser's address bar — the localhost page
-does not need to load) back into the prompt.
+The command prints an authorization URL. Open it on any device, then copy the
+redirect URL from the browser's address bar and paste it into the prompt. The
+localhost page does not need to load.
 
 ### Timeframes
 
@@ -90,7 +102,7 @@ parqet portfolio holdings <id> --output markdown >> holdings.md
 
 In CI environments (`CI=true`), JSON is the default.
 
-## Scripting & agent use
+## Scripts and agents
 
 ### Exit codes
 
@@ -98,7 +110,7 @@ In CI environments (`CI=true`), JSON is the default.
 |------|---------|
 | `0` | Success |
 | `1` | Error |
-| `2` | Not authenticated — run `parqet auth login` |
+| `2` | Not authenticated: run `parqet auth login` |
 
 ### Environment variables
 
@@ -126,7 +138,9 @@ parqet portfolio holdings <id> --output json | jq '[.[] | {name: .asset.name, va
 
 ## Claude Code skill
 
-A Claude Code skill is bundled and auto-installs to `~/.claude/skills/parqet/` on `npm install -g`. No extra setup needed. Use `/parqet` in any Claude Code session to let Claude query your portfolio directly.
+parqet-cli contains a Claude Code skill. A global install (`npm install -g parqet-cli`) copies it to
+`~/.claude/skills/parqet/`, with no further setup. In Claude Code, run `/parqet` to let Claude query
+your portfolio.
 
 ## Development
 
@@ -138,6 +152,15 @@ bun test
 bun run build
 ```
 
+## Disclaimer
+
+Unofficial and not affiliated with [Parqet](https://parqet.com). "Parqet" is their trademark.
+
+## Support
+
+Built by [Michael Jauk](https://github.com/michaeljauk). If this saves you time, consider
+[buying me a coffee](https://buymeacoffee.com/michaeljauk).
+
 ## License
 
-MIT
+[MIT](./LICENSE) © Michael Jauk
