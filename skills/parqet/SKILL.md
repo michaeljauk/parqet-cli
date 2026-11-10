@@ -42,6 +42,10 @@ parqet portfolio show <id> --output json
 parqet portfolio show <id> --timeframe 1y --output json
 parqet portfolio show <id> --timeframe max --output json
 
+# Value history of the timeframe: charts[] with date and values.history (market value),
+# values.capitalHistory (capital paid in), perfHistory, ttwror, drawdown
+parqet portfolio show <id> --timeframe max --charts --output json
+
 # Holdings
 parqet portfolio holdings <id> --output json
 
