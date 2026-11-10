@@ -60,6 +60,7 @@ parqet auth login   # opens browser for OAuth
 parqet portfolio list
 parqet portfolio show <id>
 parqet portfolio show <id> --timeframe 1y
+parqet portfolio show <id> --timeframe max --charts --output json   # adds the value history
 
 # Holdings
 parqet portfolio holdings <id>

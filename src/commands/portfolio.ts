@@ -39,16 +39,17 @@ export function registerPortfolioCommands(program: Command): void {
     .description("Show portfolio performance")
     .option("--timeframe <tf>", "Timeframe: 1d,1w,mtd,1m,3m,6m,1y,ytd,3y,5y,10y,max", "ytd")
     .option("--output <format>", "Output format: table, json, markdown")
-    .action(async (id: string, opts: { timeframe?: string; output?: string }) => {
+    .option("--charts", "Include the value history of the timeframe (json output only)")
+    .action(async (id: string, opts: { timeframe?: string; output?: string; charts?: boolean }) => {
       const format = getOutputFormat(opts.output);
       try {
-        const { performance } = await api.performance([id], (opts.timeframe ?? "ytd") as Timeframe);
+        const { performance, charts } = await api.performance([id], (opts.timeframe ?? "ytd") as Timeframe);
         const portfolios = await api.portfolios();
         const p = portfolios.find((x) => x.id === id);
         const currency = p?.currency ?? "EUR";
 
         if (format === "json") {
-          print({ portfolio: p, performance }, "json");
+          print(opts.charts ? { portfolio: p, performance, charts } : { portfolio: p, performance }, "json");
           return;
         }
 
