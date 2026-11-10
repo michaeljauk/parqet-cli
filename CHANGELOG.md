@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/michaeljauk/parqet-cli/compare/v1.0.3...v1.1.0) (2026-11-10)
+
+
+### Features
+
+* **portfolio:** add --charts to show for the value history ([#11](https://github.com/michaeljauk/parqet-cli/issues/11)) ([87218b6](https://github.com/michaeljauk/parqet-cli/commit/87218b6e2d97440e213ca4076a3a338498fba675))
+
+
+### Bug Fixes
+
+* **ci:** use node 24 and drop the npm@latest upgrade ([3faf4f3](https://github.com/michaeljauk/parqet-cli/commit/3faf4f3ef665a32ed463ec1f2b587699435c6110))
+
 ## [1.0.3](https://github.com/michaeljauk/parqet-cli/compare/v1.0.2...v1.0.3) (2026-08-16)
 
 
